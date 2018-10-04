@@ -28,6 +28,5 @@ public class Participant extends User{
 	public Event getEvent() {
 		return event;
 	}
->>>>>>> added MyException
 
 }
