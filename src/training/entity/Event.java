@@ -56,8 +56,4 @@ public class Event {
 	public void setListOfParticipants(List<Participant> listOfParticipants) {
 		this.listOfParticipants = listOfParticipants;
 	}
-	
-	
-	
-	
 }
