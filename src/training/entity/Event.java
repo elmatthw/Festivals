@@ -10,12 +10,13 @@ public class Event {
 	private String summary;
 	private List<Performer> listOfPerformers;
 	private List<Participant> listOfParticipants;
+	private Date registrationDate;
 	
 	public Event() {
 		listOfPerformers = new ArrayList();
 		listOfParticipants = new ArrayList();
-		
 	}
+	
 	
 	protected Date getDate() {
 		return date;
@@ -55,6 +56,18 @@ public class Event {
 
 	public void setListOfParticipants(List<Participant> listOfParticipants) {
 		this.listOfParticipants = listOfParticipants;
+	}
+
+
+
+	public Date getRegistrationDate() {
+		return registrationDate;
+	}
+
+
+
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
 	}
 	
 	
