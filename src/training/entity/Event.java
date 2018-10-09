@@ -57,6 +57,7 @@ public class Event {
 	public void setListOfParticipants(List<Participant> listOfParticipants) {
 		this.listOfParticipants = listOfParticipants;
 	}
+<<<<<<< HEAD
 
 
 
@@ -73,4 +74,6 @@ public class Event {
 	
 	
 	
+=======
+>>>>>>> d89140a357d259116de41ba2ae341906170bc7da
 }
