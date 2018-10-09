@@ -1,5 +1,8 @@
 package training.entity;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class User {
 	private int age;
 	private String firstName;
@@ -14,7 +17,14 @@ public class User {
 		return phoneNumber;
 	}
 	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+		Pattern pattern = Pattern.compile("^(80|\\+375)\\(?(29|33|44)\\)?(\\d{7}|(\\d{3}-\\d{2}-\\d{2}))");
+		Matcher matcher = pattern.matcher(phoneNumber);
+		if (matcher.matches()) {
+			this.phoneNumber = phoneNumber;
+		}
+		else {
+			throw new IllegalArgumentException();
+		}
 	}
 	public String getPassword() {
 		return password;
@@ -26,7 +36,13 @@ public class User {
 		return login;
 	}
 	public void setLogin(String login) {
-		this.login = login;
+		Pattern pattern = Pattern.compile("^(\\w{5,15})");
+		Matcher matcher = pattern.matcher(login);
+		if (matcher.matches())
+			this.login = login;
+		else {
+			throw new IllegalArgumentException();
+		}
 	}
 	public String getFatherName() {
 		return fatherName;
@@ -44,6 +60,7 @@ public class User {
 		return firstName;
 	}
 	public void setFirstName(String firstName) {
+		
 		this.firstName = firstName;
 	}
 	public int getAge() {
