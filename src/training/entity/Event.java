@@ -1,6 +1,8 @@
 package training.entity;
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +13,7 @@ public class Event {
 	private List<Performer> listOfPerformers;
 	private List<Participant> listOfParticipants;
 	private Date registrationDate;
+	private EntertainmentZones entertainmentZones;
 	
 	public Event() {
 		listOfPerformers = new ArrayList();
@@ -23,7 +26,7 @@ public class Event {
 	}
 	
 	protected void setDate(Date date) {
-		this.date = date;
+				this.date = date;
 	}
 
 	protected String getSummary() {
@@ -57,9 +60,6 @@ public class Event {
 	public void setListOfParticipants(List<Participant> listOfParticipants) {
 		this.listOfParticipants = listOfParticipants;
 	}
-<<<<<<< HEAD
-
-
 
 	public Date getRegistrationDate() {
 		return registrationDate;
@@ -70,10 +70,4 @@ public class Event {
 	public void setRegistrationDate(Date registrationDate) {
 		this.registrationDate = registrationDate;
 	}
-	
-	
-	
-	
-=======
->>>>>>> d89140a357d259116de41ba2ae341906170bc7da
 }
