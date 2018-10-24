@@ -1,8 +1,5 @@
 package training.entity;
-import java.text.DateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -11,10 +8,9 @@ public class Event {
 	private Place place;
 	private String summary;
 	private List<Performer> listOfPerformers;
-	private List<Participant> listOfParticipants;
+	private List<PersonalInfo> listOfParticipants;
 	private Date registrationDate;
-	private EntertainmentZones entertainmentZones;
-	
+
 	public Event() {
 		listOfPerformers = new ArrayList();
 		listOfParticipants = new ArrayList();
@@ -53,11 +49,11 @@ public class Event {
 		this.listOfPerformers = listOfPerformers;
 	}
 
-	public List<Participant> getListOfParticipants() {
+	public List<PersonalInfo> getListOfParticipants() {
 		return listOfParticipants;
 	}
 
-	public void setListOfParticipants(List<Participant> listOfParticipants) {
+	public void setListOfParticipants(List<PersonalInfo> listOfParticipants) {
 		this.listOfParticipants = listOfParticipants;
 	}
 

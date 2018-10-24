@@ -11,7 +11,7 @@ public class Performer{
 		return performerName;
 	}
 	public void setPerformerName(String performerName) {
-		Pattern pattern = Pattern.compile("\\b([A-Z]\\w+(-|\\040)?\\w*|[¿-ﬂ®][‡-ˇ∏]+(-|\\040)?([¿-ﬂ®][‡-ˇ∏]*)*)\\b");
+		Pattern pattern = Pattern.compile("\\b([A-Z]\\w+(-|\\040)?\\w*|[–ê-–Ø–Å][–∞-—è—ë]+(-|\\040)?([–ê-–Ø–Å][–∞-—è—ë]*)*)\\b");
 		Matcher matcher = pattern.matcher(performerName);
 		if (matcher.matches())
 			this.performerName = performerName;

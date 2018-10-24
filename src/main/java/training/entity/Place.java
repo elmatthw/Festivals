@@ -22,7 +22,7 @@ public class Place {
 		return placeName;
 	}
 	public void setPlaceName(String placeName) {
-		Pattern pattern = Pattern.compile("(([A-Za-z]+,?\\040?)+-?(\\\"?([A-Za-z]+,?\\040?)+\\\"?)?|([¿-ﬂ®‡-ˇ∏]+,?\\040?)+-?(\\\"?([¿-ﬂ®‡-ˇ∏]+,?\\040?)+\\\"?)?)");
+		Pattern pattern = Pattern.compile("(([A-Za-z]+,?\\040?)+-?(\\\"?([A-Za-z]+,?\\040?)+\\\"?)?|([–ê-–Ø–Å–∞-—è—ë]+,?\\040?)+-?(\\\"?([–ê-–Ø–Å–∞-—è—ë]+,?\\040?)+\\\"?)?)");
 		Matcher matcher = pattern.matcher(placeName);
 		if (matcher.matches())
 			this.placeName = placeName;
