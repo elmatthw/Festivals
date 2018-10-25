@@ -1,64 +1,54 @@
 package training.entity;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "userAuthorization")
 public class User {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Column(name = "login")
 	private String login;
+    public String getLogin() {
+        return login;
+    }
+    public void setLogin(String login) {
+        if (new InputValidation().validateLogin(login))
+            this.login = login;
+        else {
+            throw new IllegalArgumentException();
+        }
+    }
+    @Column(name = "password")
 	private String password;
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        if (new InputValidation().validatePassword(password))
+            this.password = password;
+        else
+            throw new IllegalArgumentException();
+    }
+
+    @Column(name = "email")
 	private String email;
-
-	private Pattern pattern;
-	private Matcher matcher;
-
-
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		pattern = Pattern.compile("([A-Za-z0-9-_]|[А-ЯЁа-яё0-9-_]){8,25}");
-		matcher = pattern.matcher(password);
-		if (matcher.matches())
-			this.password = password;
-		else
-			throw new IllegalArgumentException();
-	}
-
-	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		pattern = Pattern.compile("[A-Za-z0-9]+\\.?_?[A-Za-z0-9]+");
-		matcher = pattern.matcher(login);
-		if (matcher.matches())
-			this.login = login;
-		else {
-			throw new IllegalArgumentException();
-		}
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		pattern = Pattern.compile("[a-z0-9_]{5,}@[a-z]{3,10}\\.[a-z]{2,3}");
-		matcher = pattern.matcher(email);
-		if (matcher.matches())
-			this.email = email;
-		else
-			throw new IllegalArgumentException();
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email){
+        if (new InputValidation().validateEmail(email))
+            this.email = email;
+        else
+            throw new IllegalArgumentException();
+    }
 }
