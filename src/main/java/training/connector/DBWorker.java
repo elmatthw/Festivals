@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import training.entity.*;
 
 import javax.persistence.criteria.CriteriaQuery;
+import java.util.Date;
 import java.util.List;
 
 public class DBWorker {
@@ -69,7 +70,7 @@ public class DBWorker {
         return places;
     }
 
-    public void addUser(String login, String email, String password){
+    public void addAdmin(String login, String email, String password){
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
 
         session.beginTransaction();
@@ -87,21 +88,124 @@ public class DBWorker {
 
     }
 
-    public void addPersonalInfo(){
+    public void addUser(String login, String email, String password, String firstName,
+                        String lastName, String fatherName, String phoneNumber, int age){
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+
+        session.beginTransaction();
+
+        User user = new User();
+
+        user.setEmail(email);
+        user.setLogin(login);
+        user.setPassword(password);
+
+        PersonalInfo personalInfo = new PersonalInfo();
+        personalInfo.setFirstName(firstName);
+        personalInfo.setLastName(lastName);
+        personalInfo.setFatherName(fatherName);
+        personalInfo.setPhoneNumber(phoneNumber);
+        personalInfo.setAge(age);
+        personalInfo.setUserAuthorization(user);
+        personalInfo.setUserStatus(UserStatus.USER);
+        user.setPersonalInfo(personalInfo);
+
+        session.save(user);
+        session.getTransaction().commit();
+
+        session.close();
 
     }
 
-    public void addPlace(){
+    public void addQuest(String firstName, String lastName, String fatherName, String phoneNumber,
+                         int age){
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+
+        session.beginTransaction();
+
+        PersonalInfo personalInfo = new PersonalInfo();
+        personalInfo.setFirstName(firstName);
+        personalInfo.setLastName(lastName);
+        personalInfo.setFatherName(fatherName);
+        personalInfo.setPhoneNumber(phoneNumber);
+        personalInfo.setAge(age);
+        personalInfo.setUserStatus(UserStatus.QUEST);
+
+        session.save(personalInfo);
+        session.getTransaction().commit();
+
+        session.close();
+    }
+
+
+    public void addPlace(String address, int numberOfParticipant){
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        session.beginTransaction();
+
+        Place place = new Place();
+        place.setPlaceName(address);
+        place.setNumberOfParticipants(numberOfParticipant);
+
+        session.getTransaction().commit();
+        session.close();
 
     }
 
-    public void addEvent(){
+    public void addEvent(String eventName, Date date, Date deadLineDate, Place place, Festival eventType){
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+
+        session.beginTransaction();
+
+        Event event = new Event();
+        event.setEventName(eventName);
+        event.setDate(date);
+        event.setDeadlineDate(deadLineDate);
+        event.setPlace(place);
+        event.setEventName(eventName);
+
+        session.save(event);
+        session.getTransaction().commit();
+
+        session.close();
+    }
+
+    public void addPerformer(String name, String summary){
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+
+        session.beginTransaction();
+
+        Performer performer = new Performer();
+        performer.setPerformerName(name);
+        performer.setSummary(summary);
+
+        session.save(performer);
+        session.getTransaction().commit();
+
+        session.close();
+    }
+
+    public void addPerformerOnEvent(Performer performer, Event event){
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+
+        session.beginTransaction();
+        performer.getListOfEvents().add(event);
+
+        session.save(performer);
+        session.getTransaction().commit();
+
+        session.close();
 
     }
 
-    public void addPerformer(){
+    public void addUsersEvent(PersonalInfo personalInfo, Event event){
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
 
+        session.beginTransaction();
+        personalInfo.getListOfEvents().add(event);
+
+        session.save(personalInfo);
+        session.getTransaction().commit();
+
+        session.close();
     }
-
-
 }

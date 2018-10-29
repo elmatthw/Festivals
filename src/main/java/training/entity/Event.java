@@ -1,15 +1,13 @@
 package training.entity;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "event")
 public class Event {
     public Event() {
-        listOfPerformers = new ArrayList();
-        listOfParticipants = new ArrayList();
+        listOfPerformers = new HashSet<Performer>();
+        listOfParticipants = new HashSet<PersonalInfo>();
     }
 
     @Id
@@ -38,11 +36,11 @@ public class Event {
     @Temporal(TemporalType.DATE)
     @Column(name = "date")
     private Date date;
-    protected Date getDate() {
+    public Date getDate() {
         return date;
     }
 
-    protected void setDate(Date date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -60,15 +58,15 @@ public class Event {
 
     @Column(name = "summary")
 	private String summary;
-    protected String getSummary() {
+    public String getSummary() {
         return summary;
     }
 
-    protected void setSummary(String summary) {
+    public void setSummary(String summary) {
         this.summary = summary;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "place_id")
     private Place place;
     public Place getPlace() {
@@ -92,23 +90,23 @@ public class Event {
     @ManyToMany
     @JoinTable(name = "performer_on_event", joinColumns = {@JoinColumn(name = "event_id")},
                 inverseJoinColumns = {@JoinColumn(name = "performer_id")})
-	private List<Performer> listOfPerformers;
-    public List<Performer> getListOfPerformers() {
+	private Set<Performer> listOfPerformers;
+    public Set<Performer> getListOfPerformers() {
         return listOfPerformers;
     }
-    public void setListOfPerformers(List<Performer> listOfPerformers) {
+    public void setListOfPerformers(Set<Performer> listOfPerformers) {
         this.listOfPerformers = listOfPerformers;
     }
 
     @ManyToMany
     @JoinTable(name = "user_on_event", joinColumns = {@JoinColumn(name = "user_id")},
                 inverseJoinColumns = {@JoinColumn(name = "event_id")})
-	private List<PersonalInfo> listOfParticipants;
-	public List<PersonalInfo> getListOfParticipants() {
+	private Set<PersonalInfo> listOfParticipants;
+	public Set<PersonalInfo> getListOfParticipants() {
 		return listOfParticipants;
 	}
 
-	public void setListOfParticipants(List<PersonalInfo> listOfParticipants) {
+	public void setListOfParticipants(Set<PersonalInfo> listOfParticipants) {
 		this.listOfParticipants = listOfParticipants;
 	}
 

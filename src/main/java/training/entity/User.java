@@ -1,6 +1,7 @@
 package training.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "userAuthorization")
@@ -50,5 +51,27 @@ public class User {
             this.email = email;
         else
             throw new IllegalArgumentException();
+    }
+
+    @OneToOne
+    private PersonalInfo personalInfo;
+
+    public PersonalInfo getPersonalInfo() {
+        return personalInfo;
+    }
+
+    public void setPersonalInfo(PersonalInfo personalInfo) {
+        this.personalInfo = personalInfo;
+    }
+
+    @OneToMany
+    private Set<Event> eventList;
+
+    public Set<Event> getEventList() {
+        return eventList;
+    }
+
+    public void setEventList(Set<Event> eventList) {
+        this.eventList = eventList;
     }
 }

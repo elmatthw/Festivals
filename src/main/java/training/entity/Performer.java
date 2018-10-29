@@ -1,12 +1,19 @@
 package training.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "performer")
 public class Performer{
+
+    public Performer() {
+        listOfEvents = new HashSet<Event>();
+    }
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,4 +53,16 @@ public class Performer{
 			throw new IllegalArgumentException();
 	}
 
+    @ManyToMany
+    @JoinTable(name = "performer_on_event", joinColumns = {@JoinColumn(name = "performer_id")},
+            inverseJoinColumns = {@JoinColumn(name = "event_id")})
+    private Set<Event> listOfEvents;
+
+    public Set<Event> getListOfEvents() {
+        return listOfEvents;
+    }
+
+    public void setListOfEvents(Set<Event> listOfEvents) {
+        this.listOfEvents = listOfEvents;
+    }
 }

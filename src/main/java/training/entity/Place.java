@@ -1,12 +1,19 @@
 package training.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "place")
 public class Place {
+
+    public Place() {
+        this.eventSet = new HashSet<Event>();
+    }
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +32,7 @@ public class Place {
         return placeName;
     }
     public void setPlaceName(String placeName) {
-        Pattern pattern = Pattern.compile("(([A-Za-z]+,?\\040?)+-?(\\\"?([A-Za-z]+,?\\040?)+\\\"?)?|([А-ЯЁа-яё]+,?\\040?)+-?(\\\"?([А-ЯЁа-яё]+,?\\040?)+\\\"?)?)");
+        Pattern pattern = Pattern.compile("(([A-Za-z0-9]+,?\\.?\\040?-?)+-?(\\\"?([A-Za-z0-9]+,?\\.?\\040?-?)+\\\"?)?|([А-ЯЁа-яё0-9]+,?\\.?\\040?-?)+-?(\\\"?([А-ЯЁа-яё0-9]+,?\\.?\\040?-?)+\\\"?)?)");
         Matcher matcher = pattern.matcher(placeName);
         if (matcher.matches())
             this.placeName = placeName;
@@ -48,4 +55,14 @@ public class Place {
 			throw new IllegalArgumentException();
 	}
 
+    @OneToMany
+    private Set<Event> eventSet;
+
+    public Set<Event> getEventSet() {
+        return eventSet;
+    }
+
+    public void setEventSet(Set<Event> eventSet) {
+        this.eventSet = eventSet;
+    }
 }

@@ -1,6 +1,8 @@
 package training.entity;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "userInfo")
@@ -42,6 +44,7 @@ public class PersonalInfo {
             throw new IllegalArgumentException();
     }
 
+    @Column(name = "lastName")
     private String lastName;
     public String getLastName() {
         return lastName;
@@ -55,6 +58,7 @@ public class PersonalInfo {
 
     }
 
+    @Column(name = "fatherName")
     private String fatherName;
     public String getFatherName() {
         return fatherName;
@@ -67,6 +71,7 @@ public class PersonalInfo {
             throw new IllegalArgumentException();
     }
 
+    @Column(name = "phoneNumber")
     private String phoneNumber;
     public String getPhoneNumber() {
         return phoneNumber;
@@ -81,6 +86,7 @@ public class PersonalInfo {
         }
     }
 
+    @Column(name = "age")
     private int age;
     public int getAge() {
         return age;
@@ -91,6 +97,19 @@ public class PersonalInfo {
             this.age = age;
         else
             throw new IllegalArgumentException();
+    }
+
+    @ManyToMany
+    @JoinTable(name = "user_on_event", joinColumns = {@JoinColumn(name = "event_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
+    private Set<Event> listOfEvents;
+
+    public Set<Event> getListOfEvents() {
+        return listOfEvents;
+    }
+
+    public void setListOfEvents(Set<Event> listOfEvents) {
+        this.listOfEvents = listOfEvents;
     }
 
     @OneToOne
