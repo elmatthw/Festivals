@@ -1,13 +1,27 @@
-package training.entity;
+package by.iba.training.entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
 @Table(name = "event")
+@JsonIgnoreProperties(value={"user", "listOfParticipants", "listOfPerformers"})
+@Proxy(lazy = false)
 public class Event {
     public Event() {
         listOfPerformers = new HashSet<Performer>();
         listOfParticipants = new HashSet<PersonalInfo>();
+    }
+
+    public Event(String eventName, Date date, Date deadlineDate, String summary, Place place, Festival eventType) {
+        this.eventName = eventName;
+        this.date = date;
+        this.deadlineDate = deadlineDate;
+        this.summary = summary;
+        this.place = place;
+        this.eventType = eventType;
     }
 
     @Id
@@ -66,7 +80,7 @@ public class Event {
         this.summary = summary;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch =  FetchType.EAGER)
     @JoinColumn(name = "place_id")
     private Place place;
     public Place getPlace() {
@@ -76,9 +90,19 @@ public class Event {
         this.place = place;
     }
 
-    @JoinColumn(name = "eventType_id")
-    @Enumerated(EnumType.STRING)
-    private Festival eventType;
+    @Transient
+    private transient Festival eventType;
+        @JoinColumn(name = "eventType_id")
+    public int eventType_id;
+        @PrePersist
+        void populateDBFields(){
+            eventType_id = eventType.getCode();
+        }
+        @PostPersist
+        void populateTransientFields() {
+            eventType = Festival.valueOf(eventType_id);
+        }
+
     public Festival getEventType() {
         return eventType;
     }
@@ -87,7 +111,7 @@ public class Event {
         this.eventType = eventType;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch =  FetchType.LAZY)
     @JoinTable(name = "performer_on_event", joinColumns = {@JoinColumn(name = "event_id")},
                 inverseJoinColumns = {@JoinColumn(name = "performer_id")})
 	private Set<Performer> listOfPerformers;
@@ -98,7 +122,7 @@ public class Event {
         this.listOfPerformers = listOfPerformers;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch =  FetchType.LAZY)
     @JoinTable(name = "user_on_event", joinColumns = {@JoinColumn(name = "user_id")},
                 inverseJoinColumns = {@JoinColumn(name = "event_id")})
 	private Set<PersonalInfo> listOfParticipants;
@@ -110,7 +134,7 @@ public class Event {
 		this.listOfParticipants = listOfParticipants;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch =  FetchType.LAZY)
     @JoinColumn(name = "userAuthorization_id")
 	private User user;
 
@@ -120,5 +144,15 @@ public class Event {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    private int currentNumberOfParticipants;
+
+    public int getCurrentNumberOfParticipants() {
+        return currentNumberOfParticipants;
+    }
+
+    public void setCurrentNumberOfParticipants(int currentNumberOfParticipants) {
+        this.currentNumberOfParticipants = currentNumberOfParticipants;
     }
 }

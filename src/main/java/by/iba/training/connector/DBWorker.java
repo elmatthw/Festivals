@@ -1,9 +1,11 @@
-package training.connector;
+package by.iba.training.connector;
 
+import by.iba.training.entity.*;
 import org.hibernate.Session;
-import training.entity.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.Date;
 import java.util.List;
 
@@ -34,12 +36,12 @@ public class DBWorker {
         return personalInfoList;
     }
 
-    public List<Event> getEventList(){
+    public static List<Event> getEventList(){
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
 
         CriteriaQuery<Event> criteriaQuery = session.getCriteriaBuilder().createQuery(Event.class);
-        criteriaQuery.from(Event.class);
-
+        Root <Event> root = criteriaQuery.from(Event.class);
+        criteriaQuery.select(root);
         List<Event> events = session.createQuery(criteriaQuery).getResultList();
         session.close();
 
@@ -161,7 +163,7 @@ public class DBWorker {
         event.setDate(date);
         event.setDeadlineDate(deadLineDate);
         event.setPlace(place);
-        event.setEventName(eventName);
+        event.setEventType(eventType);
 
         session.save(event);
         session.getTransaction().commit();
@@ -206,6 +208,21 @@ public class DBWorker {
         session.save(personalInfo);
         session.getTransaction().commit();
 
+        session.close();
+    }
+
+    public static void addParticipant(int id){
+        CriteriaBuilder criteriaBuilder=HibernateSessionFactory.getSessionFactory().createEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Event> criteriaQuery=criteriaBuilder.createQuery(Event.class);
+        Root<Event> root=criteriaQuery.from(Event.class);
+        criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("id"), id));
+        Event event=HibernateSessionFactory.getSessionFactory().createEntityManager().createQuery(criteriaQuery).getSingleResult();
+        Session session=HibernateSessionFactory.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.evict(event);
+        event.setCurrentNumberOfParticipants(event.getCurrentNumberOfParticipants()+1);
+        session.merge(event);
+        session.getTransaction().commit();
         session.close();
     }
 }

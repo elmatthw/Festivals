@@ -1,4 +1,4 @@
-package training.entity;
+package by.iba.training.entity;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -45,7 +45,7 @@ public class Performer{
 		return summary;
 	}
 	public void setSummary(String summary) {
-		Pattern pattern = Pattern.compile("\\w{,1000}");
+		Pattern pattern = Pattern.compile("\\w{0,1000}");
 		Matcher matcher = pattern.matcher(summary);
 		if (matcher.matches())
 			this.summary = summary;

@@ -16,14 +16,14 @@
             root
         </property>
 
-        <mapping package="training.entity"/>
-        <mapping class="training.entity.User"/>
-        <mapping class="training.entity.PersonalInfo"/>
-        <mapping class="training.entity.UserStatus"/>
-        <mapping class="training.entity.Event"/>
-        <mapping class="training.entity.Festival"/>
-        <mapping class="training.entity.Performer"/>
-        <mapping class="training.entity.Place"/>
+        <mapping package="by.iba.training.entity"/>
+        <mapping class="by.iba.training.entity.User"/>
+        <mapping class="by.iba.training.entity.PersonalInfo"/>
+        <mapping class="by.iba.training.entity.UserStatus"/>
+        <mapping class="by.iba.training.entity.Event"/>
+        <mapping class="by.iba.training.entity.Festival"/>
+        <mapping class="by.iba.training.entity.Performer"/>
+        <mapping class="by.iba.training.entity.Place"/>
 
     </session-factory>
 </hibernate-configuration>

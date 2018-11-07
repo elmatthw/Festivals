@@ -1,12 +1,15 @@
-package training.connector;
+package by.iba.training.connector;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import javax.persistence.EntityManager;
+
 public class HibernateSessionFactory {
     private static SessionFactory sessionFactory = buildSessionFactory();
+    public static final EntityManager entityManager = sessionFactory.createEntityManager();
 
     public static SessionFactory buildSessionFactory(){
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()

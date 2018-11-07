@@ -1,4 +1,4 @@
-package training.entity;
+package by.iba.training.entity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

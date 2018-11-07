@@ -1,4 +1,6 @@
-package training.entity;
+package by.iba.training.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -8,6 +10,7 @@ import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "place")
+@JsonIgnoreProperties(value = "eventSet")
 public class Place {
 
     public Place() {
@@ -55,7 +58,7 @@ public class Place {
 			throw new IllegalArgumentException();
 	}
 
-    @OneToMany
+    @OneToMany(fetch =  FetchType.LAZY)
     private Set<Event> eventSet;
 
     public Set<Event> getEventSet() {

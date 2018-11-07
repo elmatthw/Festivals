@@ -1,4 +1,4 @@
-package training.entity;
+package by.iba.training.entity;
 
 import javax.persistence.*;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package training.entity;
+package by.iba.training.entity;
 
 public class MyException extends Exception {
 	MyException(){
