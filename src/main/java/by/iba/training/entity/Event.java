@@ -3,13 +3,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
 @Table(name = "event")
 @JsonIgnoreProperties(value={"user", "listOfParticipants", "listOfPerformers"})
 @Proxy(lazy = false)
-public class Event {
+public class Event implements Serializable {
     public Event() {
         listOfPerformers = new HashSet<Performer>();
         listOfParticipants = new HashSet<PersonalInfo>();

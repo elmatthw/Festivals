@@ -3,6 +3,7 @@ package by.iba.training.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -11,7 +12,7 @@ import java.util.regex.Pattern;
 @Entity
 @Table(name = "place")
 @JsonIgnoreProperties(value = "eventSet")
-public class Place {
+public class Place implements Serializable {
 
     public Place() {
         this.eventSet = new HashSet<Event>();
@@ -44,12 +45,12 @@ public class Place {
     }
 
     @Column(name = "numberOfParticipants")
-    private int numberOfParticipants;
+    private Integer numberOfParticipants;
 
-	public int getNumberOfParticipants() {
+	public Integer getNumberOfParticipants() {
 		return numberOfParticipants;
 	}
-	public void setNumberOfParticipants(int numberOfParticipants) {
+	public void setNumberOfParticipants(Integer numberOfParticipants) {
 		Pattern pattern = Pattern.compile("[1-9][0-9]*");
 		Matcher matcher = pattern.matcher(Integer.toString(numberOfParticipants));
 		if (matcher.matches())

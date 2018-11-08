@@ -1,6 +1,7 @@
 package by.iba.training.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -8,7 +9,7 @@ import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "performer")
-public class Performer{
+public class Performer implements Serializable {
 
     public Performer() {
         listOfEvents = new HashSet<Event>();

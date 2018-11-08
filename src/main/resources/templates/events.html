@@ -33,9 +33,27 @@
                 <td th:text="${event.eventType}"/>
                 <td width="500" th:text="${event.summary}"/>
                 <td th:text="${event.currentNumberOfParticipants}"/>
-                <td><button type="submit" name="action" value="attend">Attend</button></td>
             </tr>
         </th:block>
     </table>
 </body>
+
+<script type="text/javascript">
+
+    table = document.getElementById("table");
+
+
+    function loadFests(){
+        fetch('fests')
+            .then(data => data.json())
+            .then(fests => showFests(fests))
+            .catch(error => console.log('Error:', error));
+    }
+
+
+    function showFests(fests) {
+
+    }
+</script>
+
 </html>

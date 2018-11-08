@@ -1,7 +1,6 @@
 /*
 package by.iba.training.serviceImplementation;
 
-import by.iba.training.beans.Event;
 import by.iba.training.repository.EventRepository;
 import by.iba.training.service.EventService;
 import org.springframework.beans.BeanUtils;

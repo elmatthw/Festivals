@@ -2,7 +2,6 @@
 package by.iba.training.service;
 
 
-import by.iba.training.beans.Event;
 
 import java.util.List;
 
