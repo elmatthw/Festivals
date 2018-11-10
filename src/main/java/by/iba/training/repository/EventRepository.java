@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Integer> {
 
-
     /*List<Event> loadEvents();
 
     List<Event> findEventByEventName(@Param("eventName") String eventName);

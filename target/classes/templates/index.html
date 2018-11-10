@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Events' List</title>
+    <style>
+        th, td {
+            text-align: center;
+        }
+        table {
+            border-spacing: 10px;
+        }
+        body{
+            font-family: helvetica;
+        }
+        input {
+            padding: 5px;
+            font-size: 12px;
+            alignment: right;
+        }
+        input[type="submit"] {
+            color: white;
+            background: brown;
+        }
+        li {
+            display: inline;
+            padding: 0px 0px 0px 0px;
+        }
+        li[value="add-event"]{
+            padding: 0px 1100px 0px 100px;
+            font-size: 18px;
+        }
+        a{
+            color: white;
+        }
+        ul {
+            padding: 10px;
+            background: darkslategray;
+        }
+        p[id = "event-summary"] {
+            font-size: 15px;
+        }
+        p[id = "event-date"] {
+            font-size: 10px;
+        }
+        p[id = "current-number-of-participants"] {
+            font-size: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<h1>List of events</h1>
+<header>
+    <ul>
+        <li value="add-event"><a href="/events/add-event">Add Event</a></li>
+        <li value="email"><input type="email" placeholder="Your email"></li>
+        <li value="password"><input type="password" placeholder="Your password"></li>
+        <li value="signIn"><input type="submit" value="Sign In" onclick="signIn(email, password)"></li>
+        <li value="signUp"><input type="submit" value="Sign Up" onclick="signUp()"></li>
+    </ul>
+
+</header>
+
+    <!--<table id="EventsTable">
+        <tr>
+            <th>Name of Event</th>
+            <th>Date of Event</th>
+            <th>Place Name</th>
+            <th>Number of Participants</th>
+            <th>Type of Event</th>
+            <th>Summary</th>
+            <th>Current Number of Participants</th>
+        </tr>
+    </table>-->
+
+</body>
+
+<script type="text/javascript">
+
+    loadFests();
+
+    function loadFests(){
+        fetch('/events/')
+            .then(response => response.json())
+            .then(index => showFests(index))
+            .catch(error => console.log('Error:', error));
+    }
+
+    function addCount(festId){
+        fetch('/events/' + festId + '/add-participant')
+            .then(response => response.json())
+            .then(index => showFests(index))
+            .catch(error => console.log('Error:', error));
+    }
+
+    function showFests(fests) {
+        //var body = document.getElementsByTagName("body");
+
+        //var table = document.getElementById("EventsTable");
+
+        if (document.getElementsByTagName("article").length > 0) {
+            fests.forEach(() => {
+                let article = document.getElementsByTagName("article");
+                Array.prototype.forEach.call(article, art => {
+                    art.parentNode.removeChild(art);
+                });
+            });
+        }
+
+        /*if (table.rows.length > 1) {
+            fests.forEach(() => {
+                table.deleteRow(1);
+            })
+        }*/
+
+        fests.forEach(function (fest) {
+            var article = document.createElement("article");
+
+            var hEventName = document.createElement("h1");
+            var hEventNameText = document.createTextNode(fest.eventName);
+            hEventName.appendChild(hEventNameText);
+            article.appendChild(hEventName);
+
+            var pEventSummary = document.createElement("p");
+            pEventSummary.id = "event-summary";
+            var pEventSummaryText = document.createTextNode(fest.summary);
+            pEventSummary.appendChild(pEventSummaryText);
+            article.appendChild(pEventSummary);
+
+            var pDate = document.createElement("p");
+            pDate.id = "event-date";
+            var pDateText = document.createTextNode(fest.date);
+            pDate.appendChild(pDateText);
+            article.appendChild(pDate);
+
+            var pCurrentNumberOfParticipants = document.createElement("p");
+            pCurrentNumberOfParticipants.id = "current-number-of-participants";
+            var pCNOPText = document.createTextNode(fest.currentNumberOfParticipants);
+            pCurrentNumberOfParticipants.appendChild(pCNOPText);
+            article.appendChild(pCurrentNumberOfParticipants);
+
+
+            var button = document.createElement("button");
+            button.innerHTML = 'attend';
+            button.addEventListener("click", function () {
+                addCount(fest.id);
+            });
+
+            article.appendChild(button);
+
+            document.body.appendChild(article);
+
+            /*var row = document.createElement("tr");
+
+            var cellId = document.createElement("td");
+            var cellTextId = document.createTextNode(fest.eventName);
+            cellId.appendChild(cellTextId);
+            row.appendChild(cellId);
+
+            var cellDate = document.createElement("td");
+            var cellTextDate = document.createTextNode(fest.date);
+            cellDate.appendChild(cellTextDate);
+            row.appendChild(cellDate);
+
+            var cellPlace = document.createElement("td");
+            var cellTextPlace = document.createTextNode(fest.place.placeName);
+            cellPlace.appendChild(cellTextPlace);
+            row.appendChild(cellPlace);
+
+            var cellPlaceNumOfParticipants = document.createElement("td");
+            var cellTextPlaceNumOfParticipants  =
+                document.createTextNode(fest.place.numberOfParticipants);
+            cellPlaceNumOfParticipants.appendChild(cellTextPlaceNumOfParticipants);
+            row.appendChild(cellPlaceNumOfParticipants);
+
+            var cellType = document.createElement("td");
+            var cellTextType = document.createTextNode(fest.eventType_id);
+            cellType.appendChild(cellTextType);
+            row.appendChild(cellType);
+
+            var cellSummary = document.createElement("td");
+            var cellTextSummary = document.createTextNode(fest.summary);
+            cellSummary.appendChild(cellTextSummary);
+            row.appendChild(cellSummary);
+
+            var cellCurrNumOfParticipants = document.createElement("td");
+            var cellTextCurrNumOfParticipants =
+                document.createTextNode(fest.currentNumberOfParticipants);
+            cellCurrNumOfParticipants.appendChild(cellTextCurrNumOfParticipants);
+            row.appendChild(cellCurrNumOfParticipants);*/
+
+            /*var cellButton = document.createElement("td");
+            var button = document.createElement("button");
+            button.innerHTML = 'attend';
+            button.addEventListener("click", function () {
+                addCount(fest.id);
+            })
+            cellButton.appendChild(button);
+            row.appendChild(cellButton);
+
+            table.appendChild(row);*/
+        })
+    }
+
+/*    function signIn(email, password) {
+
+    }
+
+    function signUp() {
+
+    }*/
+
+</script>
+
+</html>
