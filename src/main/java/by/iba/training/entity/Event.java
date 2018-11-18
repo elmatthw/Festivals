@@ -10,13 +10,14 @@ import java.util.*;
 @Table(name = "event")
 @JsonIgnoreProperties(value={"user", "listOfParticipants", "listOfPerformers"})
 @Proxy(lazy = false)
+
 public class Event implements Serializable {
     public Event() {
         listOfPerformers = new HashSet<Performer>();
         listOfParticipants = new HashSet<PersonalInfo>();
     }
 
-    public Event(String eventName, Date date, Date deadlineDate, String summary, Place place, Festival eventType) {
+    public Event(String eventName, Date date, Date deadlineDate, String summary, Place place, EventType eventType) {
         this.eventName = eventName;
         this.date = date;
         this.deadlineDate = deadlineDate;
@@ -81,6 +82,18 @@ public class Event implements Serializable {
         this.summary = summary;
     }
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "eventType_id")
+    private EventType eventType;
+
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
+    }
+
     @ManyToOne(fetch =  FetchType.EAGER)
     @JoinColumn(name = "place_id")
     private Place place;
@@ -91,28 +104,12 @@ public class Event implements Serializable {
         this.place = place;
     }
 
-    @Transient
-    private transient Festival eventType;
-        @JoinColumn(name = "eventType_id")
-    public int eventType_id;
-        @PrePersist
-        void populateDBFields(){
-            eventType_id = eventType.getCode();
-        }
-        @PostPersist
-        void populateTransientFields() {
-            eventType = Festival.valueOf(eventType_id);
-        }
 
-    public Festival getEventType() {
-        return eventType;
-    }
-
-    public void setEventType(Festival eventType) {
-        this.eventType = eventType;
-    }
-
-    @ManyToMany(fetch =  FetchType.LAZY)
+    @ManyToMany(fetch =  FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
     @JoinTable(name = "performer_on_event", joinColumns = {@JoinColumn(name = "event_id")},
                 inverseJoinColumns = {@JoinColumn(name = "performer_id")})
 	private Set<Performer> listOfPerformers;
@@ -123,7 +120,11 @@ public class Event implements Serializable {
         this.listOfPerformers = listOfPerformers;
     }
 
-    @ManyToMany(fetch =  FetchType.LAZY)
+    @ManyToMany(fetch =  FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
     @JoinTable(name = "user_on_event", joinColumns = {@JoinColumn(name = "user_id")},
                 inverseJoinColumns = {@JoinColumn(name = "event_id")})
 	private Set<PersonalInfo> listOfParticipants;
@@ -137,14 +138,14 @@ public class Event implements Serializable {
 
 	@ManyToOne(fetch =  FetchType.LAZY)
     @JoinColumn(name = "userAuthorization_id")
-	private User user;
+	private User userAuthorization;
 
     public User getUser() {
-        return user;
+        return userAuthorization;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(User userAuthorization) {
+        this.userAuthorization = userAuthorization;
     }
 
     private int currentNumberOfParticipants;

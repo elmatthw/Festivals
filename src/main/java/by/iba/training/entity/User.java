@@ -1,11 +1,14 @@
 package by.iba.training.entity;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "userAuthorization")
+@Proxy(lazy = false)
 public class User implements Serializable {
     @Id
     @Column(name = "id")
@@ -19,13 +22,13 @@ public class User implements Serializable {
     }
 
     @Column(name = "login")
-	private String login;
-    public String getLogin() {
-        return login;
+	private String username;
+    public String getUsername() {
+        return username;
     }
-    public void setLogin(String login) {
-        if (new InputValidation().validateLogin(login))
-            this.login = login;
+    public void setUsername(String username) {
+        if (new InputValidation().validateLogin(username))
+            this.username = username;
         else {
             throw new IllegalArgumentException();
         }
@@ -36,10 +39,8 @@ public class User implements Serializable {
         return password;
     }
     public void setPassword(String password) {
-        if (new InputValidation().validatePassword(password))
-            this.password = password;
-        else
-            throw new IllegalArgumentException();
+        this.password = password;
+
     }
 
     @Column(name = "email")
@@ -54,7 +55,8 @@ public class User implements Serializable {
             throw new IllegalArgumentException();
     }
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userInfo_id")
     private PersonalInfo personalInfo;
 
     public PersonalInfo getPersonalInfo() {
@@ -65,7 +67,11 @@ public class User implements Serializable {
         this.personalInfo = personalInfo;
     }
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY,
+            mappedBy = "userAuthorization",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private Set<Event> eventList;
 
     public Set<Event> getEventList() {
@@ -74,5 +80,15 @@ public class User implements Serializable {
 
     public void setEventList(Set<Event> eventList) {
         this.eventList = eventList;
+    }
+
+    @Transient
+    private String passwordConfirm;
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 }

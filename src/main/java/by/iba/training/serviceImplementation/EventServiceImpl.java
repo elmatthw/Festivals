@@ -1,8 +1,9 @@
-/*
 package by.iba.training.serviceImplementation;
 
 import by.iba.training.entity.Event;
 import by.iba.training.repository.EventRepository;
+import by.iba.training.repository.PerformerRepository;
+import by.iba.training.repository.PlaceRepository;
 import by.iba.training.service.EventService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class EventServiceImpl {
+public class EventServiceImpl implements EventService{
 
+    @Autowired
+    private EventRepository eventRepository;
 
+    @Autowired
+    private PlaceRepository placeRepository;
 
+    @Autowired
+    private PerformerRepository performerRepository;
 
+    @Override
+    public List<Event> addParticipant(Integer id) {
+        return null;
+    }
 
+    @Override
+    public void saveEvent(Event event) {
+
+    }
 }
-*/

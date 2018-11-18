@@ -1,15 +1,20 @@
 package by.iba.training.entity;
 
+import org.hibernate.annotations.Proxy;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "userInfo")
+@Proxy(lazy = false)
 public class PersonalInfo implements Serializable {
 
     public PersonalInfo() {
+        this.statuses = new HashSet<>();
     }
 
     public PersonalInfo(String firstName, String lastName, String fatherName, String phoneNumber, int age) {
@@ -100,7 +105,11 @@ public class PersonalInfo implements Serializable {
             throw new IllegalArgumentException();
     }
 
-    @ManyToMany
+    @ManyToMany(fetch =  FetchType.LAZY,
+        cascade = {
+                CascadeType.PERSIST,
+                CascadeType.MERGE
+    })
     @JoinTable(name = "user_on_event", joinColumns = {@JoinColumn(name = "event_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private Set<Event> listOfEvents;
@@ -113,7 +122,7 @@ public class PersonalInfo implements Serializable {
         this.listOfEvents = listOfEvents;
     }
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userAuthorization_id")
     private User userAuthorization;
     public User getUserAuthorization() {
@@ -124,14 +133,20 @@ public class PersonalInfo implements Serializable {
         this.userAuthorization = userAuthorization;
     }
 
-    @JoinColumn(name = "userStatus_id")
-    @Enumerated(EnumType.STRING)
-    private UserStatus userStatus;
-    public UserStatus getUserStatus() {
-        return userStatus;
+    @ManyToMany(fetch =  FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "user_status", joinColumns =
+    @JoinColumn(name = "userInfo_id"), inverseJoinColumns = @JoinColumn(name = "status_id"))
+    private Set<UserStatus> statuses;
+
+    public Set<UserStatus> getStatuses() {
+        return statuses;
     }
 
-    public void setUserStatus(UserStatus userStatus) {
-        this.userStatus = userStatus;
+    public void setStatuses(Set<UserStatus> statuses) {
+        this.statuses = statuses;
     }
 }

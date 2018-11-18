@@ -3,23 +3,23 @@ package by.iba.training.entity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class InputValidation {
-    private Pattern pattern;
-    private Matcher matcher;
+public class InputValidation {
+    private static Pattern pattern;
+    private static Matcher matcher;
 
-    boolean validateEmail(String email){
+    public static boolean validateEmail(String email){
         pattern = Pattern.compile("[a-z0-9_]{5,}@[a-z]{3,10}\\.[a-z]{2,3}");
         matcher = pattern.matcher(email);
         return matcher.matches();
     }
 
-    boolean validatePassword(String password){
+    public static boolean validatePassword(String password){
         pattern = Pattern.compile("([A-Za-z0-9-_]|[А-ЯЁа-яё0-9-_]){8,25}");
         matcher = pattern.matcher(password);
         return matcher.matches();
     }
 
-    boolean validateLogin(String login){
+    public static boolean validateLogin(String login){
         pattern = Pattern.compile("[A-Za-z0-9]+\\.?_?[A-Za-z0-9]+");
         matcher = pattern.matcher(login);
         return matcher.matches();

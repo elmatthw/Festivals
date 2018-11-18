@@ -1,4 +1,4 @@
-package by.iba.training;
+package by.iba.training.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

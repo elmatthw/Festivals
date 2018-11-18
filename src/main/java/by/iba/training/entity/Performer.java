@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "performer")
+
 public class Performer implements Serializable {
 
     public Performer() {
@@ -54,7 +55,12 @@ public class Performer implements Serializable {
 			throw new IllegalArgumentException();
 	}
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }
+    )
     @JoinTable(name = "performer_on_event", joinColumns = {@JoinColumn(name = "performer_id")},
             inverseJoinColumns = {@JoinColumn(name = "event_id")})
     private Set<Event> listOfEvents;

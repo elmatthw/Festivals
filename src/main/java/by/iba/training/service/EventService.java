@@ -1,4 +1,3 @@
-/*
 package by.iba.training.service;
 
 
@@ -9,5 +8,5 @@ import java.util.List;
 
 public interface EventService {
     List<Event> addParticipant(Integer id);
+    void saveEvent(Event event);
 }
-*/
