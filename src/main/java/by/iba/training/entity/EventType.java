@@ -3,7 +3,7 @@ package by.iba.training.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "eventType")
+@Table(name = "type")
 public class EventType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

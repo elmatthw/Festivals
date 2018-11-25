@@ -9,7 +9,7 @@ html, body{
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #222;
 }
-div[id="events-list"]{
+div[id="events-list"], div[id="performers-list"]{
   padding-top: 40px;
 }
 .navbar {

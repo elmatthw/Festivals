@@ -29,7 +29,7 @@ public class Performer implements Serializable {
         this.id = id;
     }
 
-    @Column(name = "name")
+    @Column(name = "performerName")
     private String performerName;
     public String getPerformerName() {
         return performerName;
@@ -47,12 +47,7 @@ public class Performer implements Serializable {
 		return summary;
 	}
 	public void setSummary(String summary) {
-		Pattern pattern = Pattern.compile("\\w{0,1000}");
-		Matcher matcher = pattern.matcher(summary);
-		if (matcher.matches())
-			this.summary = summary;
-		else
-			throw new IllegalArgumentException();
+        this.summary = summary;
 	}
 
     @ManyToMany(fetch = FetchType.LAZY,
@@ -62,7 +57,7 @@ public class Performer implements Serializable {
             }
     )
     @JoinTable(name = "performer_on_event", joinColumns = {@JoinColumn(name = "performer_id")},
-            inverseJoinColumns = {@JoinColumn(name = "event_id")})
+            inverseJoinColumns = {@JoinColumn(name = "event_ID")})
     private Set<Event> listOfEvents;
 
     public Set<Event> getListOfEvents() {

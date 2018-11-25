@@ -1,12 +1,15 @@
+/*
 package by.iba.training.entity;
 
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 
-@Entity
+*/
+/*@Entity
 @Table(name = "performer_on_event")
-@Proxy(lazy = false)
+@Proxy(lazy = false)*//*
+
 public class PerformerOnEvent {
     @Id
     @Column(name = "id")
@@ -14,7 +17,7 @@ public class PerformerOnEvent {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "event_id")
+    @JoinColumn(name = "event_ID")
     private Event event;
 
     @ManyToOne
@@ -53,3 +56,4 @@ public class PerformerOnEvent {
         this.performer = performer;
     }
 }
+*/

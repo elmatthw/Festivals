@@ -1,6 +1,5 @@
 package by.iba.training.serviceImplementation;
 
-import by.iba.training.entity.PersonalInfo;
 import by.iba.training.entity.User;
 import by.iba.training.entity.UserStatus;
 import by.iba.training.repository.PersonalInfoRepository;
@@ -35,11 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println(user.getPersonalInfo().getId());
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (UserStatus status: user.getPersonalInfo().getStatuses()) {
-            System.out.println(status.getStatus());
-            grantedAuthorities.add(new SimpleGrantedAuthority(status.getStatus()));
-
-        }
+        grantedAuthorities.add(new SimpleGrantedAuthority(user.getUserStatus().getStatus()));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 }

@@ -1,6 +1,7 @@
 package by.iba.training.serviceImplementation;
 
 import by.iba.training.entity.Event;
+import by.iba.training.entity.PersonalInfo;
 import by.iba.training.repository.EventRepository;
 import by.iba.training.repository.PerformerRepository;
 import by.iba.training.repository.PlaceRepository;
@@ -24,13 +25,9 @@ public class EventServiceImpl implements EventService{
     @Autowired
     private PerformerRepository performerRepository;
 
-    @Override
-    public List<Event> addParticipant(Integer id) {
-        return null;
-    }
 
-    @Override
-    public void saveEvent(Event event) {
-
+    public void saveEvent(Event event){
+        event.getPlace().getEventSet().add(event);
+        eventRepository.save(event);
     }
 }

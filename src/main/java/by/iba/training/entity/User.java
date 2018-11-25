@@ -1,5 +1,7 @@
 package by.iba.training.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
@@ -7,7 +9,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "userAuthorization")
+@Table(name = "user")
 @Proxy(lazy = false)
 public class User implements Serializable {
     @Id
@@ -27,7 +29,7 @@ public class User implements Serializable {
         return username;
     }
     public void setUsername(String username) {
-        if (new InputValidation().validateLogin(username))
+        if (InputValidation.validateLogin(username))
             this.username = username;
         else {
             throw new IllegalArgumentException();
@@ -49,7 +51,7 @@ public class User implements Serializable {
         return email;
     }
     public void setEmail(String email){
-        if (new InputValidation().validateEmail(email))
+        if (InputValidation.validateEmail(email))
             this.email = email;
         else
             throw new IllegalArgumentException();
@@ -67,19 +69,34 @@ public class User implements Serializable {
         this.personalInfo = personalInfo;
     }
 
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "userAuthorization",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<Event> eventList;
+    @ManyToMany(fetch =  FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "user_on_event", joinColumns = {@JoinColumn(name = "event_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
+    private Set<Event> listOfEvents;
 
-    public Set<Event> getEventList() {
-        return eventList;
+    public Set<Event> getListOfEvents() {
+        return listOfEvents;
     }
 
-    public void setEventList(Set<Event> eventList) {
-        this.eventList = eventList;
+    public void setListOfEvents(Set<Event> listOfEvents) {
+        this.listOfEvents = listOfEvents;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "role_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private UserStatus userStatus;
+
+    public UserStatus getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(UserStatus userStatus) {
+        this.userStatus = userStatus;
     }
 
     @Transient

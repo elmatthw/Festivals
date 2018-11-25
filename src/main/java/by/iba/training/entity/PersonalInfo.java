@@ -14,7 +14,6 @@ import java.util.Set;
 public class PersonalInfo implements Serializable {
 
     public PersonalInfo() {
-        this.statuses = new HashSet<>();
     }
 
     public PersonalInfo(String firstName, String lastName, String fatherName, String phoneNumber, int age) {
@@ -105,25 +104,10 @@ public class PersonalInfo implements Serializable {
             throw new IllegalArgumentException();
     }
 
-    @ManyToMany(fetch =  FetchType.LAZY,
-        cascade = {
-                CascadeType.PERSIST,
-                CascadeType.MERGE
-    })
-    @JoinTable(name = "user_on_event", joinColumns = {@JoinColumn(name = "event_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id")})
-    private Set<Event> listOfEvents;
 
-    public Set<Event> getListOfEvents() {
-        return listOfEvents;
-    }
-
-    public void setListOfEvents(Set<Event> listOfEvents) {
-        this.listOfEvents = listOfEvents;
-    }
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userAuthorization_id")
+    @JoinColumn(name = "user_id")
     private User userAuthorization;
     public User getUserAuthorization() {
         return userAuthorization;
@@ -131,22 +115,5 @@ public class PersonalInfo implements Serializable {
 
     public void setUserAuthorization(User userAuthorization) {
         this.userAuthorization = userAuthorization;
-    }
-
-    @ManyToMany(fetch =  FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
-    @JoinTable(name = "user_status", joinColumns =
-    @JoinColumn(name = "userInfo_id"), inverseJoinColumns = @JoinColumn(name = "status_id"))
-    private Set<UserStatus> statuses;
-
-    public Set<UserStatus> getStatuses() {
-        return statuses;
-    }
-
-    public void setStatuses(Set<UserStatus> statuses) {
-        this.statuses = statuses;
     }
 }

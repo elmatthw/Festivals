@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    PersonalInfoRepository personalInfoRepository;
+    private PersonalInfoRepository personalInfoRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -38,12 +38,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        System.out.println(user.getUsername());
+        user.setUserStatus(statusRepository.findById(2).get());
+        userRepository.save(user);
         PersonalInfo personalInfo = new PersonalInfo();
-        personalInfo.getStatuses().add(statusRepository.findById(2).get());
         personalInfo.setUserAuthorization(user);
-        personalInfoRepository.save(personalInfo);
         user.setPersonalInfo(personalInfo);
+        personalInfoRepository.save(personalInfo);
         userRepository.save(user);
     }
 }

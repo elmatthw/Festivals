@@ -1,7 +1,5 @@
 package by.iba.training.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -11,7 +9,7 @@ import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "place")
-@JsonIgnoreProperties(value = "eventSet")
+/*@JsonIgnoreProperties(value = "eventSet")*/
 public class Place implements Serializable {
 
     public Place() {
@@ -30,7 +28,7 @@ public class Place implements Serializable {
         this.id = id;
     }
 
-    @Column(name = "address")
+    @Column(name = "placeName")
     private String placeName;
     public String getPlaceName() {
         return placeName;
@@ -59,7 +57,9 @@ public class Place implements Serializable {
 			throw new IllegalArgumentException();
 	}
 
-    @OneToMany(fetch =  FetchType.LAZY)
+    @OneToMany(mappedBy = "place",
+            cascade = CascadeType.ALL,
+            fetch =  FetchType.LAZY)
     private Set<Event> eventSet;
 
     public Set<Event> getEventSet() {

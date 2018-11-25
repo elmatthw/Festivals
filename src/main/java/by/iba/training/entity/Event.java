@@ -1,6 +1,7 @@
 package by.iba.training.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Proxy;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,7 +15,7 @@ import java.util.*;
 public class Event implements Serializable {
     public Event() {
         listOfPerformers = new HashSet<Performer>();
-        listOfParticipants = new HashSet<PersonalInfo>();
+        listOfParticipants = new HashSet<User>();
     }
 
     public Event(String eventName, Date date, Date deadlineDate, String summary, Place place, EventType eventType) {
@@ -38,7 +39,7 @@ public class Event implements Serializable {
         this.id = id;
     }
 
-    @Column(name = "eventName")
+    @Column(name = "nameOfEvent")
     private String eventName;
 
     public String getEventName() {
@@ -51,6 +52,7 @@ public class Event implements Serializable {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
     public Date getDate() {
         return date;
@@ -62,6 +64,7 @@ public class Event implements Serializable {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "deadlineDate")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date deadlineDate;
 
     public Date getDeadlineDate() {
@@ -83,7 +86,7 @@ public class Event implements Serializable {
     }
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "eventType_id")
+    @JoinColumn(name = "type_id")
     private EventType eventType;
 
     public EventType getEventType() {
@@ -110,7 +113,7 @@ public class Event implements Serializable {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             })
-    @JoinTable(name = "performer_on_event", joinColumns = {@JoinColumn(name = "event_id")},
+    @JoinTable(name = "performer_on_event", joinColumns = {@JoinColumn(name = "event_ID")},
                 inverseJoinColumns = {@JoinColumn(name = "performer_id")})
 	private Set<Performer> listOfPerformers;
     public Set<Performer> getListOfPerformers() {
@@ -125,20 +128,25 @@ public class Event implements Serializable {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             })
-    @JoinTable(name = "user_on_event", joinColumns = {@JoinColumn(name = "user_id")},
-                inverseJoinColumns = {@JoinColumn(name = "event_id")})
-	private Set<PersonalInfo> listOfParticipants;
-	public Set<PersonalInfo> getListOfParticipants() {
+    @JoinTable(name = "user_on_event", joinColumns = {@JoinColumn(name = "event_ID")},
+                inverseJoinColumns = {@JoinColumn(name = "user_id")})
+	private Set<User> listOfParticipants;
+	public Set<User> getListOfParticipants() {
 		return listOfParticipants;
 	}
 
-	public void setListOfParticipants(Set<PersonalInfo> listOfParticipants) {
+	public void setListOfParticipants(Set<User> listOfParticipants) {
 		this.listOfParticipants = listOfParticipants;
 	}
 
 	@ManyToOne(fetch =  FetchType.LAZY)
-    @JoinColumn(name = "userAuthorization_id")
+    @JoinColumn(name = "user")
 	private User userAuthorization;
+
+	@Transient
+	public String placeName;
+	@Transient
+    public String type;
 
     public User getUser() {
         return userAuthorization;
@@ -151,10 +159,26 @@ public class Event implements Serializable {
     private int currentNumberOfParticipants;
 
     public int getCurrentNumberOfParticipants() {
-        return currentNumberOfParticipants;
+        return listOfParticipants.size();
     }
 
-    public void setCurrentNumberOfParticipants(int currentNumberOfParticipants) {
-        this.currentNumberOfParticipants = currentNumberOfParticipants;
+    public void setCurrentNumberOfParticipants() {
+        this.currentNumberOfParticipants = listOfParticipants.size();
+    }
+
+    public String getPlaceName() {
+        return placeName;
+    }
+
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "status")
+@Table(name = "role")
 @Proxy(lazy = false)
 public class UserStatus {
     @Id
@@ -15,11 +15,11 @@ public class UserStatus {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "status")
+    @Column(name = "role")
     private String status;
 
     public UserStatus() {
-        this.personalInfoSet = new HashSet<>();
+        /*this.personalInfoSet = new HashSet<>();*/
     }
 
     public int getId() {
@@ -38,15 +38,14 @@ public class UserStatus {
         this.status = status;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            mappedBy = "statuses")
-    private Set<PersonalInfo> personalInfoSet;
+    /*@OneToMany(fetch = FetchType.LAZY)
+    private Set<User> personalInfoSet;
 
-    public Set<PersonalInfo> getPersonalInfoSet() {
+    public Set<User> getPersonalInfoSet() {
         return personalInfoSet;
     }
 
-    public void setPersonalInfoSet(Set<PersonalInfo> personalInfoSet) {
+    public void setPersonalInfoSet(Set<User> personalInfoSet) {
         this.personalInfoSet = personalInfoSet;
-    }
+    }*/
 }
