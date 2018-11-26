@@ -12,10 +12,17 @@ html, body{
 div[id="events-list"], div[id="performers-list"]{
   padding-top: 40px;
 }
-.navbar {
-  padding-left: 40px;
-  padding-right: 40px;
+li{
+  margin-right: 10px;
+  margin-left: 10px;
 }
+.nav-link{
+  margin-top: 0;
+}
+/*.navbar {
+  padding-left: 60px;
+  padding-right: 60px;
+}*/
 /*
 html, body{
   margin:0px;

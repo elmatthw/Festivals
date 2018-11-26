@@ -1,14 +1,11 @@
-/*
 package by.iba.training.entity;
 
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 
-*/
-/*@Entity
+@Entity
 @Table(name = "performer_on_event")
-@Proxy(lazy = false)*//*
 
 public class PerformerOnEvent {
     @Id
@@ -56,4 +53,3 @@ public class PerformerOnEvent {
         this.performer = performer;
     }
 }
-*/

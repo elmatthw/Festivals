@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Controller
-@RequestMapping("/events")
+@RequestMapping("")
 public class EventController {
 
     @Autowired
@@ -41,7 +41,7 @@ public class EventController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/events"},method = RequestMethod.GET)
     public String all(ModelMap model){
         model.addAttribute("events", eventRepository.findAll());
         return "/events";
@@ -53,7 +53,7 @@ public class EventController {
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
 
-    @RequestMapping(value = "/admin/create-event", method = RequestMethod.GET)
+    @RequestMapping(value = "/events/admin/create-event", method = RequestMethod.GET)
     public String createEvent(Model model) {
         model.addAttribute("eventForm", new Event());
 
@@ -83,7 +83,7 @@ public class EventController {
     }
 
 
-    @RequestMapping("/admin/show-event/add-performer")
+    @RequestMapping("/events/admin/show-event/add-performer")
     public String addPerformers(@RequestParam("id") String id, Model model){
         List<Performer> performerList = performerRepository.findAll();
         model.addAttribute("performerList", performerList);
@@ -91,7 +91,7 @@ public class EventController {
         return "/events/admin/show-event/add-performer";
     }
 
-    @RequestMapping(value = "/admin/show-event/add-performer", method = RequestMethod.POST)
+    @RequestMapping(value = "/events/admin/show-event/add-performer", method = RequestMethod.POST)
     public String createEvent(@RequestParam("id") String id,
                               @ModelAttribute("performer") Performer selectedPerformer,
                               BindingResult bindingResult,
@@ -103,19 +103,20 @@ public class EventController {
             for (FieldError error : errors ) {
                 System.out.println (error.getObjectName() + " - " + error.getDefaultMessage());
             }
-            return "/events/admin/show-event/add-performer";
+            return "/events/admin/show-event/";
         }
 
         Performer editPerformer=performerRepository.getOne(selectedPerformer.getId());
         Event event=eventRepository.getOne(Integer.parseInt(id));
         event.getListOfPerformers().add(editPerformer);
-        //editPerformer.getListOfEvents().add(event);
+        editPerformer.getListOfEvents().add(event);
         performerRepository.save(editPerformer);
+        eventRepository.save(event);
 
-        return "redirect:/performers/show-performer?id=" + editPerformer.getId();
+        return "redirect:/events/show-event?id=" + event.getId();
     }
 
-    @RequestMapping("/show-event/{id}/{login}")
+    @RequestMapping("/events/show-event/{id}/{login}")
     public String addUserOnEvent(@PathVariable("id") String id,
                                @PathVariable("login") String login){
         User user = userRepository.findByUsername(login);
@@ -127,7 +128,7 @@ public class EventController {
         return "redirect:/events";
     }
 
-    @RequestMapping("/show-event")
+    @RequestMapping("/events/show-event")
     public String one(@RequestParam("id") String id, ModelMap model){
         model.addAttribute("events", eventRepository.findById(Integer.parseInt(id)).get());
         return "/events/show-event";
@@ -152,7 +153,7 @@ public class EventController {
     }
 
 
-    @DeleteMapping("/{id}/delete-event")
+    @DeleteMapping("/events/{id}/delete-event")
     public void deleteEvent(@PathVariable("id") String id){
         eventRepository.deleteById(Integer.parseInt(id));
     }

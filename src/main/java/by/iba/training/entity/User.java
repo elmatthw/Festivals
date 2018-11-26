@@ -74,7 +74,7 @@ public class User implements Serializable {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             })
-    @JoinTable(name = "user_on_event", joinColumns = {@JoinColumn(name = "event_ID")},
+    @JoinTable(name = "userOnEvent", joinColumns = {@JoinColumn(name = "event_ID")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private Set<Event> listOfEvents;
 
@@ -86,7 +86,7 @@ public class User implements Serializable {
         this.listOfEvents = listOfEvents;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "role_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private UserStatus userStatus;

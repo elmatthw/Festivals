@@ -32,21 +32,21 @@ public class PerformerController {
         return "/performers/show-performer";
     }
 
-    @RequestMapping(value = "/add-performer", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/add-performer", method = RequestMethod.GET)
     public String createEvent(Model model) {
         model.addAttribute("performerForm", new Performer());
 
-        return "/performers/add-performer";
+        return "performers/admin/add-performer";
     }
 
-    @RequestMapping(value = "/add-performer", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/add-performer", method = RequestMethod.POST)
     public String createEvent(@ModelAttribute("performerForm") Performer performerForm,
                               BindingResult bindingResult,
                               Model model) {
         //userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "/performers/add-performer";
+            return "performers/admin/add-performer";
         }
 
         performerRepository.save(performerForm);

@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: elmatthw
-  Date: 23.11.18
-  Time: 19:54
+  Date: 25.11.18
+  Time: 14:36
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -19,7 +19,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Performers</title>
+    <title>My festivals</title>
     <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/common.css" rel="stylesheet">
     <link href="${contextPath}/resources/css/navbar-top.css" rel="stylesheet">
@@ -28,35 +28,51 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+    <style>
+        .festivals{
+            padding-top: 60px;
+            padding-left: 40px;
+            width: 700px;
+        }
+    </style>
 </head>
 <body>
+
 <jsp:include page="nav-bar.jsp"/>
-
-<div id="performers-list">
-    <c:forEach items="${performers}" var="performer" varStatus="vs">
-        <div class="container">
-
-            <h2>${performer.performerName}</h2>
-                ${performer.summary}
-
-            <sec:authentication property="principal.authorities" var="authorities" />
-            <c:forEach items="${authorities}" var="authority" varStatus="vs">
-
-                    <c:if test="${authority=='ADMIN'}">
-                            <button class="btn btn-default" onclick="location.href='events/delete?id=${performer.id}';">Delete</button>
-                    </c:if>
-
-            </c:forEach>
+<sec:authorize access="isAuthenticated()">
+    <form method="GET" class="festivals">
+        <c:forEach items="${events}" var="event" varStatus="vs">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8">${event.eventName}</div>
+                    <div class="col-sm-4">${event.date}</div>
+                </div>
+                <br>
+                <button class="btn btn-default" onclick="location.href='#';">Cancel</button>
+            </div>
             <hr>
-        </div>
-    </c:forEach>
-</div>
+        </c:forEach>
 
+    </form>
+</sec:authorize>
+
+
+<sec:authorize access="!isAuthenticated()">
+    <form method="POST" class="form-signin">
+        <h2 class="form-heading">Enter your email</h2>
+
+        <div class="form-group ${error != null ? 'has-error' : ''}">
+            <span>${message}</span>
+            <input name="username" type="text" class="form-control" placeholder="Username"
+                   autofocus="true"/>
+            <input name="password" type="password" class="form-control" placeholder="Password"/>
+            <span>${error}</span>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+        </div>
+
+    </form>
+</sec:authorize>
 </body>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="${contextPath}/resources/js/jquery-slim.min.js"><\/script>')</script>
-<script src="${contextPath}/resources/js/popper.min.js"></script>
-<script src="${contextPath}/resources/js/bootstrap.min.js"></script>
-<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 </html>

@@ -128,7 +128,7 @@ public class Event implements Serializable {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             })
-    @JoinTable(name = "user_on_event", joinColumns = {@JoinColumn(name = "event_ID")},
+    @JoinTable(name = "userOnEvent", joinColumns = {@JoinColumn(name = "event_ID")},
                 inverseJoinColumns = {@JoinColumn(name = "user_id")})
 	private Set<User> listOfParticipants;
 	public Set<User> getListOfParticipants() {
